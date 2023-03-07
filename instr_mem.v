@@ -3,7 +3,7 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date: 03/07/2023 07:29:27 AM
+// Create Date: 03/04/2023 07:29:27 AM
 // Design Name: 
 // Module Name: instr_mem
 // Project Name: 
@@ -28,7 +28,7 @@ module instr_mem
     #(
         parameter ADDRESS_WIDTH = 32,
         parameter INSTR_WIDTH = 32,
-        parameter PROGRAM = "fibonacci.txt"
+        parameter PROGRAM = "factorial.txt"
     )
     (
         input wire [ADDRESS_WIDTH-1:0] addr, // Input address wire

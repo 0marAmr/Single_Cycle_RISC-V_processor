@@ -3,7 +3,7 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date: 03/07/2023 08:06:15 AM
+// Create Date: 03/04/2023 08:06:15 AM
 // Design Name: 
 // Module Name: main_decoder
 // Project Name: 
@@ -22,17 +22,19 @@
 
 module main_decoder(
     input [6:0]op, // 7-bit input signal op
-    output reg branch, result_src, mem_write, alu_src, reg_write, // output control signals 
+    output reg branch, result_src, mem_write, alu_src, reg_write, load, // output control signals 
     output reg [1:0] imm_src, alu_op // output control signals with 2 bits
 );
 
-    localparam [6:0]    load_word   = 7'b000_0011, // opcode for loading a word from memory
-                        store_word  = 7'b010_0011, // opcode for storing a word into memory
-                        r_type      = 7'b011_0011, // opcode for R-type instructions
-                        i_type      = 7'b001_0011, // opcode for I-type instructions
-                        branch_inst = 7'b110_0011; // opcode for branch instructions
+    localparam [6:0]    load_word   = 7'b000_0011,  // opcode for loading a word from memory
+                        store_word  = 7'b010_0011,  // opcode for storing a word into memory
+                        r_type      = 7'b011_0011,  // opcode for R-type instructions
+                        i_type      = 7'b001_0011,  // opcode for I-type instructions
+                        branch_inst = 7'b110_0011,  // opcode for branch instructions
+                        halt = 7'b000_000;          // opcode for halt instruction that stop the pc increment
                     
     always @(*) begin // combinational always block
+        load = 1'b1;
         case (op) // decode the opcode
 
             load_word: begin // if the opcode is for loading a word
@@ -80,6 +82,16 @@ module main_decoder(
                 branch = 1'b1; // do not take a branch
                 alu_op = 2'b01;
             end 
+            halt: begin
+                load = 1'b0;
+                reg_write = 1'bx;
+                imm_src = 2'bxx;
+                alu_src = 1'bx;
+                mem_write = 1'bx;
+                result_src = 1'bx;
+                branch = 1'bx;
+                alu_op = 2'bxx;
+            end            
             default: begin
                 reg_write = 1'b0;
                 imm_src = 2'b00;

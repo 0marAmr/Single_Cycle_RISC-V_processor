@@ -3,7 +3,7 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date: 03/07/2023 08:06:15 AM
+// Create Date: 03/04/2023 08:06:15 AM
 // Design Name: 
 // Module Name: mips
 // Project Name: 
@@ -22,12 +22,12 @@
 
 module mips(
         input wire clk, n_reset,                  // clock and reset inputs
-        input wire [31:0] read_data,
+        input wire [31:0] read_data, instr,
         output wire mem_write,
-        output wire [31:0] write_data, alu_result, result
+        output wire [31:0] write_data, alu_result, pc
     );
 
-    wire [31:0] instr, imm_ext;
+    wire [31:0] instr, imm_ext, result;
     wire [2:0] alu_control;
     wire [1:0] imm_src;
 
@@ -66,24 +66,25 @@ module mips(
         .alu_control(alu_control),
         .alu_src(alu_src),
         .imm_src(imm_src),
-        .reg_write(reg_write)
+        .reg_write(reg_write),
+        .load(load) // output load signal for PC
     );
 
     instruction_fetch_unit #(
         .ADDRESS_WIDTH(32),
         .INSTR_WIDTH(32),
-        .PROGRAM("fibonacci.txt"),
         .N(32)
     ) ifu (
         // input ports
         .clk(clk),
         .n_reset(n_reset),
-        .load(1'b1),
+        .load(load),
         .pc_src(pc_src),
         .imm_src(imm_src),
-        // output ports
         .instr(instr),
-        .imm_ext(imm_ext)
+        // output ports
+        .imm_ext(imm_ext),
+        .pc(pc)
     );
 
 endmodule

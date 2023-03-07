@@ -3,7 +3,7 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date: 03/07/2023 11:19:25 AM
+// Create Date: 03/04/2023 11:19:25 AM
 // Design Name: 
 // Module Name: instruction_fetch_unit
 // Project Name: 
@@ -25,16 +25,16 @@ module instruction_fetch_unit
 #(
 parameter ADDRESS_WIDTH = 32, // Defines the number of bits for the memory address
 parameter INSTR_WIDTH = 32, // Defines the number of bits for the instruction
-parameter PROGRAM = "fibonacci.txt", // The program file to be loaded into memory
 parameter N = 32 // Parameter defining the number of bits for the PC counter
 )(
 input wire clk, n_reset, // Clock and reset inputs
-input load, pc_src, // Load input for setting a new PC value
-input [1:0] imm_src, // immediate source
-output wire [INSTR_WIDTH-1:0] instr, // Output the fetched instruction
+input wire load, pc_src, // Load input for setting a new PC value
+input wire [1:0] imm_src, // immediate source
+input wire [INSTR_WIDTH-1: 0] instr,
+output wire [ADDRESS_WIDTH-1: 0] pc, // program counter output
 output wire [INSTR_WIDTH-1:0] imm_ext
 );
-wire [N-1: 0] pc, pc_next, pc_plus_4, pc_target, imm_ext_internal;
+wire [N-1: 0]  pc_next, pc_plus_4, pc_target, imm_ext_internal;
 
 // Instantiate the program counter module
 prg_cntr #(.N(N)) program_counter (
@@ -43,16 +43,6 @@ prg_cntr #(.N(N)) program_counter (
     .load(load),      // Load input
     .pc_next(pc_next),  // Next PC output
     .pc(pc)           // Current PC output
-);
-
-// Instantiate the instruction memory module
-instr_mem #(
-    .ADDRESS_WIDTH(ADDRESS_WIDTH), // Set the address width to 32 bits
-    .INSTR_WIDTH(INSTR_WIDTH),   // Set the instruction width to 32 bits
-    .PROGRAM(PROGRAM)           // Set the program file to PROGRAM
-) instruction_memory (
-    .addr(pc), // Address input wire
-    .instr(instr) // Fetched instruction output wire
 );
 
 // Calculate the PC+4 value

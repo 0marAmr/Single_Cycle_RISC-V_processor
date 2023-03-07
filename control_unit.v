@@ -3,7 +3,7 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date: 03/07/2023 08:02:24 AM
+// Create Date: 03/04/2023 08:02:24 AM
 // Design Name: 
 // Module Name: control_unit
 // Project Name: 
@@ -24,7 +24,7 @@ module control_unit(
     input [6:0] op,                // input signal for the opcode
     input wire [2:0] funct3,       // input signal for the function code (3 bits)
     input wire funct7, zero, sign, // input control signals (1 bit each)
-    output wire  result_src, mem_write, alu_src, reg_write, // output control signals
+    output wire  result_src, mem_write, alu_src, reg_write, load,  // output control signals
     output wire [1:0] imm_src, // output signal for immediate source (2 bits)
     output wire [2:0] alu_control, // output signal for ALU control (3 bits)
     output reg pc_src
@@ -42,7 +42,8 @@ module control_unit(
         .alu_src(alu_src),  // output control signal for ALU source
         .reg_write(reg_write),  // output control signal for register write
         .imm_src(imm_src),  // output control signal for immediate source
-        .alu_op(alu_op)    // output control signal for ALU operation
+        .alu_op(alu_op),    // output control signal for ALU operation
+        .load(load) // output load signal for PC
     );
 // Instantiate alu_decoder module and connect its inputs and outputs
     alu_decoder alu_decoder_inst (
