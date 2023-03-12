@@ -77,7 +77,7 @@ The control unit is composed of two decoders: Main decoder and ALU decoder.
 #### Factorial
 -   Assembly
 ```Assembly
-; This program calculates the factorial of number in reg x0.
+# This program calculates the factorial of number in reg x0.
 
 xor x0, x0, 0
 addi x1, x0, 8
@@ -116,7 +116,7 @@ halt
 
 -   Assembly
 ```Assembly
-; This program calculates the fibnacci sequence up to 10 terms.
+# This program calculates the fibnacci sequence up to 10 terms.
 
 xor x0,x0,x0
 addi x1,x0,0
